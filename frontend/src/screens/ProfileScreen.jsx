@@ -9,10 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import {
-	getUserDetails,
-	//  updateUserProfile
-} from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 // import { listMyOrders } from '../actions/orderActions'
 
 const ProfileScreen = ({ location, history }) => {
@@ -30,8 +27,8 @@ const ProfileScreen = ({ location, history }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
-	//   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-	//   const { success } = userUpdateProfile
+	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+	const { success } = userUpdateProfile;
 
 	//   const orderListMy = useSelector((state) => state.orderListMy)
 	//   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
@@ -55,7 +52,9 @@ const ProfileScreen = ({ location, history }) => {
 		if (password !== confirmPassword) {
 			setMessage("Passwords do not match");
 		} else {
-			//   dispatch(updateUserProfile({ id: user._id, name, email, password }))
+			dispatch(
+				updateUserProfile({ id: user._id, name, email, password }),
+			);
 		}
 	};
 
@@ -65,7 +64,11 @@ const ProfileScreen = ({ location, history }) => {
 				<h2>User Profile</h2>
 				{message && <Message variant="danger">{message}</Message>}
 				{}
-				{/* {success && <Message variant='success'>Profile Updated</Message>} */}
+				
+					{success && (
+					<Message variant="success">Profile Updated</Message>
+			)} 
+	
 				{loading ? (
 					<Loader />
 				) : error ? (
@@ -75,7 +78,7 @@ const ProfileScreen = ({ location, history }) => {
 						<Form.Group controlId="name">
 							<Form.Label>Name</Form.Label>
 							<Form.Control
-								type="name"
+								type="text"
 								placeholder="Enter name"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
